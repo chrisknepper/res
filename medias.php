@@ -28,13 +28,7 @@ function importClasses() {
 	}
 }
 
-
-//Only do the import if this isn't an Ajax request
-
-$_SERVER['HTTP_X_REQUESTED_WITH'] = isset($_SERVER['HTTP_X_REQUESTED_WITH']) ? $_SERVER['HTTP_X_REQUESTED_WITH'] : '';
-if(empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) !== 'xmlhttprequest') {
-	importClasses();
-}
+importClasses();
 
 add_action('wp_ajax_mediasGroupOrder', 'saveMediasGroupOrder');
 function saveMediasGroupOrder() {
