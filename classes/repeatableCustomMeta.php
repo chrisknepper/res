@@ -10,10 +10,10 @@ class repeatableCustomMeta {
 	public $portfolioFields = array();
 
 	public function __construct() {
-
+		include('metaboxes/meta_box.php');
+		$post_id = $_GET['post'] ? $_GET['post'] : $_POST['post_ID'];
 		//Need a way to only do this on portfolio editing screen
-		if((isset($_GET['action']) && $_GET['action'] === 'edit') || (isset($_GET['post_type']) && $_GET['post_type'] === 'portfolio')) {
-			$post_id =  '';
+
 			if(isset($_GET['post'])) {
 				$post_id = $_GET['post'];
 			}
@@ -53,23 +53,20 @@ class repeatableCustomMeta {
 				$groupsToRender = $defaultGroups;
 				//Can't call update_post_meta when the plugin loads since $post isn't set yet
 				//Wait until admin_head hook
-				//add_action('admin_head', array($this, 'updatePostMetaGroups'));
+				add_action('admin_head', array($this, 'updatePostMetaGroups'));
 			}
 			else {
 				$groupsToRender = $field_groups;
 			}
 
-			include('metaboxes/meta_box.php');
-
 			foreach ($groupsToRender as $id => $group) {
-				new \custom_add_meta_box($id, $group['label'], $group['inputs'], 'portfolio', true );
+				new \Custom_Add_Meta_Box($id, $group['label'], $group['inputs'], 'portfolio');
 			}
 
 			//Do these on every page load.
-			//add_filter('post_type_link', array($this, 'addTaxonomyToPermalinks'), 1, 2 );
-			//add_action('add_meta_boxes', array($this, 'addPortfolioFields'));
-			//add_action('admin_head', array($this,'addDashboardJs'), 100);
-		}
+			add_filter('post_type_link', array($this, 'addTaxonomyToPermalinks'), 1, 2 );
+			add_action('add_meta_boxes', array($this, 'addPortfolioFields'));
+			add_action('admin_head', array($this,'addDashboardJs'), 100);
 
 	}
 

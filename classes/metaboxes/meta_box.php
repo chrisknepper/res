@@ -564,6 +564,7 @@ class Custom_Add_Meta_Box {
 	 * saves the captured data
 	 */
 	function save_box( $post_id ) {
+		error_log('rollin on a river');
 		$post_type = get_post_type();
 		
 		// verify nonce
